@@ -1,0 +1,99 @@
+<template>
+    <div class="slds-box slds-p-top_small" style="background-color: white;">
+    <div class="slds-page-header">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media">
+              <div class="slds-media__figure">
+                <lightning-icon icon-name="standard:channel_program_history" alternative-text="Edit" title="Edit" size="xx-small" class="slds-m-left_xx-small"></lightning-icon>
+              </div>
+              <div class="slds-media__body">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                      <span class="slds-page-header__title slds-truncate" title="Finance Information">Finance Information</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-page-header__col-actions">
+                <template if:false={isOpen}>
+                    <span class={customClass}>{titleAction}</span>
+                    <div class="slds-dropdown-trigger slds-dropdown-trigger_click">
+                        <button class="slds-button slds-section__title-action" onclick={toggleEditForm}>
+                            <lightning-icon icon-name="utility:switch"  class="slds-button__icon slds-button__icon_left slds-section__title-action-icon" size="xx-small">
+                            </lightning-icon>
+                        </button>
+                    </div>
+                </template>
+          </div>
+        </div>
+    </div>
+
+    <template if:true={isEditOpen}>
+        <div class="slds-var-p-around_xxx-small">
+            <lightning-record-edit-form object-api-name="Account" record-type-id="012000000000000AAA" style="background-color: #ffffff"
+                onsubmit={handleSubmit} 
+                onsuccess={handleSuccess}
+                onerror={handleError}
+                record-id={recordId}
+                >
+                <div class="slds-grid" lwc:ref="toValidate2">
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-input-field field-name={accRegistration} max-length="30"> </lightning-input-field>
+                        <lightning-input-field data-id="isValidate" field-name={accountBank} max-length="90" required="required" onchange={changeDisabled}> </lightning-input-field>
+                        <lightning-input-field data-id="isValidate" field-name={accountBillingCountryCode} max-length="40" required="required" onchange={changeDisabled}> </lightning-input-field>
+                        <lightning-input-field field-name="Routing_Number__c" max-length="9"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-input-field data-id="isValidate" field-name={accountNumber} max-length="40" required="required" onchange={changeDisabled}> </lightning-input-field>
+                        <lightning-input-field data-id="isValidate" field-name={accountSwiftCode} max-length="9" required="required" onchange={changeDisabled}></lightning-input-field>
+                        <lightning-input-field data-id="isValidate" field-name={accountIban} max-length="32" required="required" onchange={changeDisabled}> </lightning-input-field>
+                        <lightning-input-field data-id="isValidate" field-name={accountCurrencyIsoCode} max-length="40" required="required" onchange={changeDisabled}></lightning-input-field>
+                    </div>
+                </div>
+
+                <c-file-upload record-id={recordId}></c-file-upload>
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_10-of-12"></div>
+                    <div class="slds-col slds-size_2-of-12">
+                        <lightning-button
+                            class="slds-m-right_x-small"
+                            variant="brand"
+                            type="submit"
+                            disabled = {saveDisabled}
+                            label="Save">
+                        </lightning-button>
+                    </div>
+                </div>
+            </lightning-record-edit-form>
+        </div>
+    </template>
+    <template if:true={isViewOpen}>   
+            <lightning-record-view-form
+                record-id={recordId}
+                object-api-name="Account"
+                fields={fieldList}
+                columns="2"
+            >
+            <div class="slds-box">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_10-of-12">
+                        <lightning-output-field field-name={accRegistration}> </lightning-output-field>
+                        <lightning-output-field field-name={accountBank}>   </lightning-output-field>
+                        <lightning-output-field field-name={accountBillingCountryCode}> </lightning-output-field>
+                        <lightning-output-field field-name={accountNumber}>   </lightning-output-field>                        
+                        <lightning-output-field field-name={accountSwiftCode}> </lightning-output-field>
+                        <lightning-output-field field-name={accountIban}>   </lightning-output-field>                        
+                        <lightning-output-field field-name={accountCurrencyIsoCode}> </lightning-output-field>                     
+                    </div>
+                    <div class="slds-col slds-size_2-of-12">
+                        <button class="slds-button viewStyle slds-m-right_x-large" onclick={changeToEdit}>Edit</button>
+                    </div>
+                </div>
+                <c-file-download record-id={recordId}></c-file-download>
+            </div>
+            </lightning-record-view-form>
+      </template>
+    </div>
+</template>

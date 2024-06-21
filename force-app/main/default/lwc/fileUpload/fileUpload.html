@@ -1,0 +1,20 @@
+<template>
+    <div class="slds-box slds-p-top_small" style="background-color: white; position: relative;">
+        <lightning-input type="file"
+            label="Please attach the bank account statement, such as a letter from bank. Payment wil not be possible without verification"
+            onchange={handleFileUploaded}
+            multiple>
+        </lightning-input>
+        <template if:true={filesData}>
+            <template for:each={filesData} for:item="imgName" for:index="index">
+                <span key={imgName.fileName} data-id={index} >          
+                <div class="slds-button-group slds-m-right_x-small slds-m-top_x-small" style="border:solid 1px rgb(181, 178, 178); border-radius: 2rem;" role="group">
+                    <lightning-icon onclick={removeReceiptImage} icon-name="utility:close"  class="slds-button__icon slds-button__icon_left slds-section__title-action-icon" size="xx-small">
+                    </lightning-icon>
+                    <span class="fileUpload slds-m-right_x-small">&nbsp;{imgName.fileName}&nbsp;</span>
+                </div>
+                </span>
+            </template>
+        </template>
+    </div>   
+</template>
